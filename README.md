@@ -2,12 +2,7 @@
 
 Pipeline for downloading Cantonese speech source audio from online links, cutting timestamped clips from the WenetSpeech-Yue metadata, and browsing the results in a Streamlit app.
 
-This repository has two workflows:
-
-1. **Main pipeline** (recommended): download full audio → cut clips using dataset timestamps → browse clips
-2. **STT test ground** (optional / experimental): transcribe full audio with a Hugging Face Cantonese model → cut clips from STT segments
-
-The main pipeline and STT test ground are separate. The main pipeline does not depend on PyTorch or Transformers.
+The pipeline has three steps: **download full audio → cut clips → browse results**.
 
 ---
 
@@ -114,7 +109,7 @@ python --version
 ffmpeg -version
 ```
 
-### Python packages (main pipeline)
+### Python packages
 
 From the project root:
 
@@ -291,67 +286,7 @@ Clean_WenetSpeech-Yue/
 
 ---
 
-## 5. STT test ground (optional)
-
-> Only use this if the `stt_testground/` folder is included in your copy of the repo.
-> This is experimental and separate from the main pipeline.
-
-Instead of relying on dataset timestamps, this approach:
-
-1. Takes a full downloaded MP3 from `success/`
-2. Runs Cantonese speech-to-text with a Hugging Face Whisper model
-3. Cuts one clip per transcript segment
-4. Pairs STT text with each clip
-
-### Extra install (STT only)
-
-```bash
-pip install -r stt_testground/requirements-stt.txt
-```
-
-First run downloads model weights from Hugging Face (can take several minutes).
-
-### Run STT extraction
-
-Quick CPU test (recommended first):
-
-```bash
-python stt_extract.py --max-sources 1 --max-segments 5 --max-audio-sec 120
-```
-
-Fuller run:
-
-```bash
-python stt_extract.py --max-sources 1 --max-segments 20
-```
-
-**What to expect**
-
-- Clear status messages: model loading, transcription, clipping, done
-- CPU transcription is slow on long audio (e.g. 20+ minutes of audio can take 10–30+ minutes)
-- Output goes to `stt_testground/output/`:
-  - `stt_clip_view.csv`
-  - `clips/`
-  - `transcripts/`
-
-Browse STT results:
-
-```bash
-streamlit run stt_visual.py
-```
-
-Useful STT flags:
-
-```bash
-python stt_extract.py --help
-python stt_extract.py --max-audio-sec 120    # only first 2 minutes per file
-python stt_extract.py --skip-clips           # transcribe only, no ffmpeg cuts
-python stt_extract.py --verbose              # show Hugging Face / HTTP logs
-```
-
----
-
-## 6. Recommended first run (sanity check)
+## 5. Recommended first run (sanity check)
 
 Use small limits so you can verify the full flow quickly:
 
@@ -372,7 +307,7 @@ It is normal for some links to fail. Check `failed/failed_links.csv` for reasons
 
 ---
 
-## 7. Troubleshooting
+## 6. Troubleshooting
 
 ### `ffmpeg` not found
 
@@ -397,13 +332,9 @@ These rows are rejected on purpose to avoid invalid tiny MP3 files.
 
 Re-run `python extract_clips.py` after downloading, or check that `local_audio_path` in `clip_view.csv` points to an existing file under `speech_clips/`.
 
-### STT appears stuck on “Running speech-to-text”
-
-This usually means transcription is still running on CPU. Use `--max-audio-sec 120` for faster tests. You should see heartbeat messages every ~30 seconds.
-
 ---
 
-## 8. Project structure (code)
+## 7. Project structure (code)
 
 ```text
 audio_utils.py          Shared helpers (timestamps, paths, ffmpeg probes)
@@ -416,14 +347,11 @@ extract_clips.py        Timestamp-based clip cutting
 explorer/               Streamlit app for main pipeline
 visual.py               Streamlit entry point
 sample_output/          Example clip outputs included for reference
-stt_testground/         Optional STT experiment (if included)
-stt_extract.py          STT CLI entry point (if included)
-stt_visual.py           STT Streamlit entry point (if included)
 ```
 
 ---
 
-## 9. Typical workflow summary
+## 8. Typical workflow summary
 
 ```text
 wenetspeech_refined_clean.csv
