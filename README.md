@@ -34,6 +34,62 @@ sample_output/
 
 After you run the full pipeline yourself, your own outputs will appear in the same layout under `speech_clips/`, `success/`, and `failed/` (not under `sample_output/`).
 
+### Example successful clips (8 included)
+
+| Audio file | Region | Transcript (`rover_result`) | Timestamp (s) | Duration |
+|------------|--------|----------------------------|---------------|----------|
+| `BV18p4y1B7Az_579010_581320_gd0046218_579010_581320.mp3` | 广东 | 点解你上最后堂课啊 | 579.01 – 581.32 | 2.56s |
+| `BV13x411X7BC_p354_224350_227080_gd0038204_224350_227080.mp3` | 广东 | 你如今嘅神态真系好大 | 224.35 – 227.08 | 3.07s |
+| `BV1Yx411R7XM_p226_83440_85810_gd0037436_83440_85810.mp3` | 广东 | 我需要你嘅帮助 | 83.44 – 85.81 | 2.69s |
+| `89b85f7d7158e810_317530_322030_xg0011561_317530_322030.mp3` | 香港 | 啊紫薇啦风水面掌上呢啲气息 | 317.53 – 322.03 | 4.74s |
+| `BV1yf4y1e7bj_p9_213210_218460_gd0047660_213210_218460.mp3` | 广东 | 系唔会勉强你做啲唔愿意做嘅事嘅妈咪 | 213.21 – 218.46 | 5.50s |
+| `BV1Xg4y1F7pp_p39_17800_20460_gd0040277_17800_20460.mp3` | 广东 | 喺遇难子之前系一个月左右 | 17.80 – 20.46 | 2.82s |
+| `BV1kW411a7AR_p56_1132410_1135870_gd0040508_1132410_1135870.mp3` | 广东 | 咁其实如果冇名指一个人讲你岳阳呢 | 1132.41 – 1135.87 | 3.71s |
+| `BV1Yx411R7XM_p113_86560_91130_gd0037850_86560_91130.mp3` | 广东 | 电视咧系由我入咗嚟安道以国境日开始嘅 | 86.56 – 91.13 | 4.74s |
+
+All files live under `sample_output/speech_clips/`.
+
+**Example clip row** (from `clip_view.csv`):
+
+```text
+key:              gd0046218_579010_581320
+rover_result:     点解你上最后堂课啊
+region:           广东
+link:             https://www.bilibili.com/video/BV18p4y1B7Az/
+time_stamp:       579.010_581.320
+cache_key:        BV18p4y1B7Az
+full_audio_path:  success/BV18p4y1B7Az.mp3
+local_audio_path: sample_output/speech_clips/BV18p4y1B7Az_579010_581320_gd0046218_579010_581320.mp3
+```
+
+Clip filenames follow the pattern:
+
+```text
+{cache_key}_{start_ms}_{end_ms}_{dataset_key}.mp3
+```
+
+For example, `BV13x411X7BC_p354_224350_227080_gd0038204_224350_227080.mp3` is a clip from Bilibili part `p=354`, cut from 224.35s to 227.08s.
+
+### Example failed downloads (3 included)
+
+| Key | Region | Link type | Error |
+|-----|--------|-----------|-------|
+| `gd0027722_620270_624350` | 广东 | douyin | Unsupported URL (user profile page, not a direct video link) |
+| `gd0015101_107430_109860` | 广东 | ixigua | Unsupported URL (channel home page, not a direct video link) |
+| `xq0016230_1795440_1825440` | 香港 | bilibili | Bilibili space video blocked by server (412) |
+
+**Example failed row**:
+
+```text
+key:          gd0027722_620270_624350
+rover_result: 但系小母你又睬都唔睬佢入咗船舱添
+region:       广东
+link:         https://www.douyin.com/user/MS4wLjABAAAAHZBNiNY5IdqbOIvfnNgre0HPjf0rrrRO3YdWBf0DpqI
+error:        Unsupported URL: https://www.douyin.com/user/...
+```
+
+These failures are expected for some dataset links — the metadata row still has transcript text, but the URL is not always a downloadable video page.
+
 ---
 
 ## 1. What you need installed
