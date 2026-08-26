@@ -2,6 +2,8 @@
 /failed
 /speech_clips
 /success
+!sample_output/**
+!sample_output/**/*.csv
 *.env
 __pycache__/
 .venv

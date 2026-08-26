@@ -11,6 +11,31 @@ The main pipeline and STT test ground are separate. The main pipeline does not d
 
 ---
 
+## 0. Sample output (what the pipeline produces)
+
+The repo includes **`sample_output/`** — a small set of real clip outputs so you can see what the code produces before running anything yourself.
+
+```text
+sample_output/
+├── speech_clips/
+│   ├── clip_view.csv          # 8 example clip rows (text, timestamps, paths)
+│   └── *.mp3                  # Clipped Cantonese audio files
+├── success/
+│   └── success_links.csv      # Matching download metadata
+└── failed/
+    └── failed_links.csv       # 3 example failed download rows
+```
+
+**How to inspect it**
+
+1. Open `sample_output/speech_clips/*.mp3` in any audio player to listen to the clips.
+2. Open `sample_output/speech_clips/clip_view.csv` to see the transcript (`rover_result`), region, source link, and timestamp for each clip.
+3. Open `sample_output/failed/failed_links.csv` to see examples of rows that fail during download.
+
+After you run the full pipeline yourself, your own outputs will appear in the same layout under `speech_clips/`, `success/`, and `failed/` (not under `sample_output/`).
+
+---
+
 ## 1. What you need installed
 
 ### System tools
@@ -204,7 +229,8 @@ Clean_WenetSpeech-Yue/
 │   └── *.mp3                          # Cut clip files
 ├── downloader.py                      # Step 1 entry point
 ├── extract_clips.py                   # Step 2 entry point
-└── visual.py                          # Step 3 entry point
+├── visual.py                          # Step 3 entry point
+├── sample_output/                     # Example pipeline output (included in repo)
 ```
 
 ---
@@ -271,9 +297,10 @@ python stt_extract.py --verbose              # show Hugging Face / HTTP logs
 
 ## 6. Recommended first run (sanity check)
 
-For a first test, use small limits so you can verify the full flow quickly:
+Use small limits so you can verify the full flow quickly:
 
 ```bash
+pip install -r requirements.txt
 python downloader.py --limit 10
 python extract_clips.py --limit 10
 streamlit run visual.py
@@ -332,6 +359,7 @@ download/               Downloader package
 extract_clips.py        Timestamp-based clip cutting
 explorer/               Streamlit app for main pipeline
 visual.py               Streamlit entry point
+sample_output/          Example clip outputs included for reference
 stt_testground/         Optional STT experiment (if included)
 stt_extract.py          STT CLI entry point (if included)
 stt_visual.py           STT Streamlit entry point (if included)
