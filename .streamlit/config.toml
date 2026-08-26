@@ -1,0 +1,8 @@
+[server]
+headless = true
+
+# Helps avoid some reconnect issues when the page is refreshed quickly.
+enableWebsocketCompression = false
+
+[browser]
+gatherUsageStats = false

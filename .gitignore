@@ -1,0 +1,7 @@
+*.csv
+/failed
+/speech_clips
+/success
+*.env
+__pycache__/
+.venv
