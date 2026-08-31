@@ -19,6 +19,7 @@ from download.config import (
     DEFAULT_USE_ARIA2,
     DEFAULT_WORKERS,
 )
+from audio_utils import require_ffmpeg
 from download.logging_utils import configure_logger
 from download.pipeline import run_downloads
 
@@ -105,6 +106,11 @@ def resolve_project_path(path: Path, project_root: Path) -> Path:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     configure_logger(args.quiet)
+
+    ffmpeg_error = require_ffmpeg()
+    if ffmpeg_error:
+        logging.error(ffmpeg_error)
+        return 1
 
     project_root = Path(__file__).resolve().parent.parent
     output_dir = resolve_project_path(args.output_dir, project_root)

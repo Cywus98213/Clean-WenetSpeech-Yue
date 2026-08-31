@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+import shutil
 from pathlib import Path
 from typing import Optional, Tuple
 from urllib.parse import parse_qs, urlparse
@@ -173,6 +174,33 @@ def find_cached_audio(
 
 
 MIN_VALID_CLIP_BYTES = 1024
+
+FFMPEG_INSTALL_HINT = (
+    "Install ffmpeg, then close and reopen the terminal:\n"
+    "  Windows: winget install ffmpeg\n"
+    "  macOS:   brew install ffmpeg\n"
+    "  Linux:   sudo apt install ffmpeg\n"
+    "Check with: ffmpeg -version"
+)
+
+
+def ffmpeg_missing_tools() -> list[str]:
+    """Return ffmpeg/ffprobe names that are not on PATH."""
+    return [name for name in ("ffmpeg", "ffprobe") if shutil.which(name) is None]
+
+
+def require_ffmpeg() -> str | None:
+    """Return a user-facing error if ffmpeg/ffprobe are missing, else None."""
+    missing = ffmpeg_missing_tools()
+    if not missing:
+        return None
+    tools = " and ".join(missing)
+    return (
+        f"{tools} not found on PATH.\n"
+        "The downloader needs ffmpeg to convert audio to MP3, "
+        "and extract_clips.py needs it to cut clips.\n"
+        f"{FFMPEG_INSTALL_HINT}"
+    )
 
 
 def probe_audio_duration(path: Path) -> Optional[float]:

@@ -20,6 +20,7 @@ from audio_utils import (
     parse_time_stamp,
     probe_audio_duration,
     clean_error_message,
+    require_ffmpeg,
 )
 
 
@@ -240,6 +241,11 @@ def main() -> int:
     args = parser.parse_args()
 
     configure_logger(args.quiet)
+
+    ffmpeg_error = require_ffmpeg()
+    if ffmpeg_error:
+        logging.error(ffmpeg_error)
+        return 1
 
     try:
         df = pd.read_csv(args.csv_path)
