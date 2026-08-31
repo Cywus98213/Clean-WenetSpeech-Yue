@@ -27,8 +27,6 @@ from audio_utils import (
 DEFAULT_CSV_PATH = Path("success") / "success_links.csv"
 DEFAULT_CACHE_DIR = Path("success")
 DEFAULT_CLIP_DIR = Path("speech_clips")
-DEFAULT_SUCCESS_DIR = Path("success")
-DEFAULT_FAILED_DIR = Path("failed")
 CLIP_CSV_NAME = "clip_view.csv"
 PROJECT_ROOT = Path(__file__).resolve().parent
 DEFAULT_WORKERS = 8
@@ -220,18 +218,6 @@ def main() -> int:
         type=Path,
         default=DEFAULT_CLIP_DIR,
         help=f"Directory where clipped MP3 files will be written. Defaults to {DEFAULT_CLIP_DIR}",
-    )
-    parser.add_argument(
-        "--success-dir",
-        type=Path,
-        default=DEFAULT_SUCCESS_DIR,
-        help=f"Directory where success CSV output is written. Defaults to {DEFAULT_SUCCESS_DIR}",
-    )
-    parser.add_argument(
-        "--failed-dir",
-        type=Path,
-        default=DEFAULT_FAILED_DIR,
-        help=f"Directory where failure CSV output is written. Defaults to {DEFAULT_FAILED_DIR}",
     )
     parser.add_argument(
         "--workers",

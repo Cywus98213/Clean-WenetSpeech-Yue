@@ -1,4 +1,5 @@
 *.csv
+!sample_output/**/*.csv
 /failed
 /speech_clips
 /success

@@ -52,7 +52,7 @@ def run_downloads(
     success: list[tuple[str, str]] = []
     failed: list[tuple[str, str, str]] = []
 
-    with ThreadPoolExecutor(max_workers=max(4, workers)) as executor:
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as executor:
         futures = {
             executor.submit(
                 download_audio,

@@ -41,22 +41,6 @@ def refine_entry(data: dict) -> dict | None:
     if not link:
         return None
 
-    # Determine link type
-    if link.endswith(".mp3"):
-        link_type = "mp3"
-    elif "bilibili" in link:
-        link_type = "bilibili"
-    elif "douyin" in link:
-        link_type = "douyin"
-    elif "ixigua" in link:
-        link_type = "ixigua"
-    else:
-        link_type = "other"
-
-    speech_start_time, speech_end_time = parse_time_stamp(meta_info.get("time_stamp"))
-    speaker_attributes = data.get("speaker_attributes") or {}
-    speech_quality = data.get("speech_quality") or {}
-
     return {
         "key": data.get("key"),
         "rover_result": data.get("rover_result"),
@@ -77,7 +61,7 @@ def main():
         with open("wenetspeech_refined.csv", "w", newline="", encoding="utf-8") as csv_file:
             writer = csv.DictWriter(
                 csv_file,
-                fieldnames=["key", "rover_result", "region", "link", "time_stamp", "duration"]
+                fieldnames=["key", "rover_result", "region", "link", "time_stamp", "duration"],
             )
             writer.writeheader()
 
