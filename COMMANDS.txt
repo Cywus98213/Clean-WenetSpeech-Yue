@@ -1,0 +1,100 @@
+Clean WenetSpeech-Yue - command list
+====================================
+Run all commands from the project root, with the virtual environment activated.
+
+
+0. Check tools
+--------------
+python --version
+ffmpeg -version
+
+
+1. Setup (once)
+---------------
+python -m venv .venv
+
+# Windows
+.venv\Scripts\activate
+
+# macOS / Linux
+source .venv/bin/activate
+
+pip install -r requirements.txt
+
+# Optional: put cookies.txt in the project root (Netscape format).
+# The downloader uses it automatically if the file exists.
+
+
+2. Main pipeline
+----------------
+# Step 1 - download full source audio
+python downloader.py
+python downloader.py --limit 20
+python downloader.py --limit 100 --workers 4 --quiet
+python downloader.py --workers 2
+python downloader.py --help
+python -m download
+
+# Step 2 - cut timestamped clips
+python extract_clips.py
+python extract_clips.py --limit 50
+python extract_clips.py --workers 8 --limit 100
+python extract_clips.py --help
+
+# Step 3 - browse results
+streamlit run visual.py
+
+
+3. Recommended first run
+------------------------
+pip install -r requirements.txt
+python downloader.py --limit 10
+python extract_clips.py --limit 10
+streamlit run visual.py
+
+
+4. Common downloader options
+----------------------------
+python downloader.py wenetspeech_refined_clean.csv
+python downloader.py --output-dir success
+python downloader.py --failed-dir failed
+python downloader.py --cookies-file cookies.txt
+python downloader.py --workers 8
+python downloader.py --fragment-workers 5
+python downloader.py --retries 2
+python downloader.py --retry-delay 5
+python downloader.py --use-aria2
+python downloader.py --quiet
+
+
+5. Common clip options
+----------------------
+python extract_clips.py success/success_links.csv
+python extract_clips.py --cache-dir success
+python extract_clips.py --clip-dir speech_clips
+python extract_clips.py --workers 8
+python extract_clips.py --limit 100
+python extract_clips.py --quiet
+
+
+6. Optional metadata scripts
+----------------------------
+# These are not part of the main 3-step pipeline.
+# main.py also needs: pip install python-dotenv huggingface_hub
+# and a HF_TOKEN in a .env file.
+
+python main.py
+python modify.py
+python tmp.py
+
+
+7. Outputs
+----------
+success/success_links.csv     downloaded full audio index
+success/*.mp3                 full source audio
+failed/failed_links.csv       download failures
+speech_clips/clip_view.csv    successful clip index
+speech_clips/*.mp3            cut clips
+
+Default input CSV:
+wenetspeech_refined_clean.csv

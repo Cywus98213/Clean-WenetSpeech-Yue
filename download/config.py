@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 DEFAULT_CSV_PATH = Path("wenetspeech_refined_clean.csv")
-DEFAULT_LIMIT = 20000
+DEFAULT_LIMIT = 200
 DEFAULT_OUTPUT_DIR = Path("success")
 DEFAULT_FAILED_DIR = Path("failed")
 DEFAULT_COOKIES_FILE = Path("cookies.txt")
